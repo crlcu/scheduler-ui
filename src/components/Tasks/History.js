@@ -1,36 +1,59 @@
 import classNames from 'classnames'
 import React, { Component } from 'react'
-import { Input, Pagination } from 'react-materialize'
+import { Icon, Input, Modal } from 'react-materialize'
+import Pagination from 'react-js-pagination'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-//import { Button, Input, Pagination, ProgressBar } from 'react-materialize'
 
-import * as actions from '../../store/tasks/actions'
+import * as actions from '../../store/tasks/history/actions'
 import Widget from '../Shared/Widget'
 
 class History extends Component {
     componentDidMount() {
-        console.log(this.props.id)
+        console.log(this.props.location)
+        this.props.actions.search(this.props.location.query.page)
+    }
 
-        this.props.actions.history(this.props.id)
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location.query.page !== nextProps.location.query.page) {
+            this.props.actions.search(this.props.location.query.page)
+        }
     }
 
     render() {
-        const { actions, loading, paginator } = this.props
+        const { actions, loading, paginator, task } = this.props
 
         const footer = (
             <div className="footer indigo lighten-5">
-                <Pagination
-                    items={ Math.ceil(paginator.total / paginator.per_page) }
-                    activePage={ paginator.current_page }
-                    maxButtons={ 5 }
-                    href={ 'test' }
-                    onSelect={ actions.search }
-                />
+                <div className="row">
+                    <div className="left">
+                        <Pagination
+                            activePage={ paginator.current_page }
+                            itemsCountPerPage={ paginator.per_page }
+                            totalItemsCount={ paginator.total || 0 }
+                            pageRangeDisplayed={5}
+
+                            onChange={ actions.changePage }
+
+                            prevPageText={ <Icon>chevron_left</Icon> }
+                            nextPageText={ <Icon>chevron_right</Icon> }
+                            firstPageText={ <Icon>chevron_left</Icon> }
+                            lastPageText={ <Icon>chevron_right</Icon> }
+                        />
+                    </div>
+                    <div className="right">
+                        <Link 
+                            className="btn waves-effect waves-light red"
+                            to={"/tasks/" + task.id + "/executions/clear"}
+                        >
+                            <Icon left>delete</Icon> Clear all
+                        </Link>
+                    </div>
+                </div>
             </div>
         )
-
+        
         return (
             <Widget className={classNames({ loading: loading })} title={ 'History' } footer={ footer }>
                 <table className="bordered highlight condensed">
@@ -51,7 +74,7 @@ class History extends Component {
                     </thead>
                     <tbody>
                         {paginator.data.map((row, i) =>
-                            <Row row={ row } key={ i } />
+                            <Row row={ row } task={ task } key={ i } />
                         )}
                     </tbody>
                 </table>
@@ -62,12 +85,22 @@ class History extends Component {
 
 class Row extends React.Component {
     render() {
-        const { row } = this.props
+        const { row, task } = this.props
 
         return (
             <tr>
                 <td></td>
-                <td>{ row.id }</td>
+                <td>
+                    <Modal
+                        header={ task.name }
+                        fixedFooter
+                        trigger={
+                            <Link to="#modal">{ row.id }</Link>
+                        }
+                    >
+                        <div dangerouslySetInnerHTML={{ __html: row.result.replace(/(?:\r\n|\r|\n)/g, '<br />') }} />
+                    </Modal>
+                </td>
                 <td>{ row.created_at }</td>
                 <td>{ row.updated_at }</td>
                 <td>{ row.duration_for_humans }</td>
@@ -79,9 +112,10 @@ class Row extends React.Component {
 // which props do we want to inject, given the global store state?
 const mapStateToProps = state => {
     return {
-        paginator:  state.tasks.paginator,
-        loading:    state.tasks.loading
-
+        loading:    state.tasks_history.loading,
+        location:   state.routing.locationBeforeTransitions,
+        paginator:  state.tasks_history.paginator,
+        task:       state.tasks.task
     }
 }
 

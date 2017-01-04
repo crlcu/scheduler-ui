@@ -57,6 +57,7 @@ ReactDOM.render(
                     <IndexRoute component={TasksSearch} />
 
                     <Route path="/" component={TasksSearch} />
+                    
                     <Route path=":id">
                         <IndexRoute component={TasksView} />
 

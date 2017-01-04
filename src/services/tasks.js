@@ -13,15 +13,11 @@ class Tasks extends Api {
             throw new Error(`Request failed, HTTP status ${response.status}`)
         }
         
-        const data = await response.json()
-        
-        return data
+        return await response.json()
     }
 
     async search(args = {}) {
-        const url = `${this.baseUrl}?page=${args.page}`
-
-        console.log(args)
+        const url = `${this.baseUrl}?page=${args.page}&limit=4`
 
         const response = await fetch(url, {
             method:     'GET',
@@ -32,9 +28,7 @@ class Tasks extends Api {
             throw new Error(`Request failed, HTTP status ${response.status}`)
         }
         
-        const data = await response.json()
-        
-        return data
+        return await response.json()
     }
 
     async view(id) {
@@ -55,7 +49,7 @@ class Tasks extends Api {
     }
 }
 
-export default new Tasks('http://localhost:1337/api.tasks-scheduler.com/api/tasks', {
+export default new Tasks('http://localhost:1337/dev.machine:8000/api/tasks', {
     username: 'admin@tasks-scheduler.com',
     password: 'access88'
 })

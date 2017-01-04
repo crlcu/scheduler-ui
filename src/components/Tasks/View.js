@@ -1,7 +1,6 @@
-import classNames from 'classnames'
 import Highlight from'react-syntax-highlight'
 import React, { Component } from 'react'
-import { Icon } from 'react-materialize'
+import { Icon, ProgressBar } from 'react-materialize'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -60,17 +59,20 @@ class View extends Component {
         return (
             <div>
                 <Widget
-                    className={classNames({ loading: loading })} 
-                    footer={footer}
-                    title={ task.name } 
+                    footer={ footer }
+                    loading={ loading }
                     right={"Average time " + task.average_for_humans}
+                    title={ task.name }   
                 >
                     <Highlight lang="bash" value={ code } />
                 </Widget>
 
                 { task.id ?
                     <History id={ task.id } /> :
-                    <div></div>
+                    <div>
+                        Loading history
+                        <ProgressBar />
+                    </div>
                 }
             </div>
         )

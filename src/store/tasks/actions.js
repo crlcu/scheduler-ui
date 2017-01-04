@@ -1,3 +1,5 @@
+import { browserHistory } from 'react-router'
+
 import * as types from './actionTypes'
 import api from '../../services/tasks'
 
@@ -14,6 +16,12 @@ export const history = (id) => {
         }
 
         dispatch({ type: types.LOADING, loading: false })
+    }
+}
+
+export const changePage = (page) => {
+    return (dispatch, getState) => {
+        browserHistory.push('/tasks?page=' + page)
     }
 }
 

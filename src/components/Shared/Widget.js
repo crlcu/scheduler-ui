@@ -1,20 +1,30 @@
+import classNames from 'classnames'
 import React, { Component } from 'react'
+import { ProgressBar } from 'react-materialize'
 
 export default class Widget extends Component {
     render() {
+        const { children, className, footer, loading, right, title } = this.props
+
         return (
-            <div className={"widget " + this.props.className}>
+            <div className={"widget " + classNames({ loading: loading }) + ' ' + className}>
                 <div className="header indigo lighten-5">
-                    <span className="title">{ this.props.title }</span>
-                    { this.props.right ?
-                        <div className="right">{this.props.right}</div> :
+                    <span className="title">{ title }</span>
+                    { right ?
+                        <div className="right">{ right }</div> :
                         ''
                     }
                 </div>
                 <div className="content">
-                    { this.props.children }
+                    { loading ?
+                        <ProgressBar /> :
+                        children
+                    }
                 </div>
-                { this.props.footer }
+                { loading ?
+                    '' :
+                    footer
+                }
             </div>
         )
     }

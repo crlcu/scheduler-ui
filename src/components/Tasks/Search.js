@@ -1,17 +1,22 @@
-import classNames from 'classnames'
 import React, { Component } from 'react'
-import { Input, Pagination } from 'react-materialize'
+import { Icon, Input } from 'react-materialize'
+import Pagination from 'react-js-pagination'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-//import { Button, Input, Pagination, ProgressBar } from 'react-materialize'
 
 import * as actions from '../../store/tasks/actions'
 import Widget from '../Shared/Widget'
 
 class Search extends Component {
     componentDidMount() {
-        this.props.actions.search()
+        this.props.actions.search(this.props.location.query.page)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location.query.page !== nextProps.location.query.page) {
+            this.props.actions.search(nextProps.location.query.page)
+        }
     }
 
     render() {
@@ -20,21 +25,36 @@ class Search extends Component {
         const footer = (
             <div className="footer indigo lighten-5">
                 <Pagination
-                    items={ Math.ceil(paginator.total / paginator.per_page) }
                     activePage={ paginator.current_page }
-                    maxButtons={ 5 }
-                    href={ 'test' }
-                    onSelect={ actions.search }
+                    itemsCountPerPage={ paginator.per_page }
+                    totalItemsCount={ paginator.total || 0 }
+                    pageRangeDisplayed={5}
+
+                    onChange={ actions.changePage }
+
+                    prevPageText={ <Icon>chevron_left</Icon> }
+                    nextPageText={ <Icon>chevron_right</Icon> }
+                    firstPageText={ <Icon>chevron_left</Icon> }
+                    lastPageText={ <Icon>chevron_right</Icon> }
                 />
             </div>
         )
 
         return (
-            <Widget className={classNames({ loading: loading })} title={ 'Tasks' } footer={ footer }>
+            <Widget
+                footer={ footer }
+                loading={ loading }
+                title={ 'Tasks' }
+            >
                 <table className="bordered highlight condensed">
                     <caption>
                         <div className="file-path-wrapper">
-                            <Input name="q" s={12} placeholder="Search ..." autoComplete="off" />
+                            <Input
+                                autoComplete="off"
+                                onChange={ this.handleChange }
+                                name="q" s={12}
+                                placeholder="Search ..."
+                            />
                         </div>
                     </caption>
 
@@ -87,8 +107,8 @@ class TasksRow extends React.Component {
 // which props do we want to inject, given the global store state?
 const mapStateToProps = state => {
     return {
-        paginator:  state.tasks.paginator,
-        loading:    state.tasks.loading
+        loading:    state.tasks.loading,
+        paginator:  state.tasks.paginator
     }
 }
 
