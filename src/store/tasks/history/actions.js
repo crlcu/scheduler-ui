@@ -12,11 +12,12 @@ export const changePage = (page) => {
 }
 
 export const search = (args = {}) => {
-    return async(dispatch, getState) => {
+    return async(dispatch, getState, x) => {
         dispatch({ type: types.LOADING, loading: true })
 
         try {
             const state = getState()
+
             const paginator = await api.search(state.tasks.task.id, args)
 
             dispatch({ type: types.SEARCH, paginator })

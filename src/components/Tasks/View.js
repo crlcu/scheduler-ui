@@ -67,7 +67,7 @@ class View extends Component {
                     <Highlight lang="bash" value={ code } />
                 </Widget>
 
-                { task.id ?
+                { task.id && !loading ?
                     <History id={ task.id } /> :
                     <div>
                         Loading history
@@ -80,13 +80,7 @@ class View extends Component {
 }
 
 // which props do we want to inject, given the global store state?
-const mapStateToProps = state => {
-    return {
-        loading:    state.tasks.loading,
-        paginator:  state.tasks.paginator,
-        task:       state.tasks.task
-    }
-}
+const mapStateToProps = state => ( state.tasks )
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)

@@ -11,7 +11,6 @@ import Widget from '../Shared/Widget'
 
 class History extends Component {
     componentDidMount() {
-        console.log(this.props.location)
         this.props.actions.search({ page: this.props.location.query.page })
     }
 
@@ -112,7 +111,7 @@ class Row extends React.Component {
                         header={ task.name }
                         fixedFooter
                         trigger={
-                            <Link to="#modal">{ row.id }</Link>
+                            <Link to="#modal" dangerouslySetInnerHTML={{ __html: row.result_preview }} />
                         }
                     >
                         <div dangerouslySetInnerHTML={{ __html: row.result.replace(/(?:\r\n|\r|\n)/g, '<br />') }} />
