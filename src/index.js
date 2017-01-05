@@ -14,6 +14,7 @@ import * as reducers from './store/reducers'
 import Root from './containers/Root'
 
 import Login from './components/Auth/Login'
+import Logout from './components/Auth/Logout'
 import Tasks from './containers/Tasks'
 import TasksSearch from './components/Tasks/Search'
 import TasksView from './components/Tasks/View'
@@ -36,8 +37,6 @@ const store = createStore(
 const history = syncHistoryWithStore(browserHistory, store)
 
 function requireAuth(nextState, replace) {
-    //return nextState
-
     if (!auth.loggedIn()) {
         replace({
             pathname: '/login',
@@ -53,6 +52,8 @@ ReactDOM.render(
             <Route path="login" component={Login} />
 
             <Route path="/" component={Root} onEnter={requireAuth}>
+                <Route path="logout" component={Logout} />
+
                 <Route path="/tasks" component={Tasks}>
                     <IndexRoute component={TasksSearch} />
 

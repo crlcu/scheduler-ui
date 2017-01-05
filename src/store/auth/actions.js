@@ -1,28 +1,23 @@
+import { browserHistory } from 'react-router'
 import * as types from './actionTypes'
 import api from '../../services/auth'
 
-const loginError = (message) => {
-    return {
-        type: types.LOGIN_FAILURE,
-        isFetching: false,
-        isAuthenticated: false,
-        message
-    }
-}
-
 // Calls the API to get a token and
 // dispatches actions along the way
-export const loginUser = (credentials) => {
+export const login = (credentials) => {
     return async(dispatch, getState) => {
         dispatch({ type: types.LOGGING_IN, credentials })
         
         try {
             const user = await api.login(credentials.email, credentials.pasword)
-
+            
             // If login was successful, set the token in local storage
-            //localStorage.setItem('id_token', user.id_token)
+            localStorage.setItem('token', user.email)
 
             dispatch({ type: types.LOGGED_IN, user })
+
+            // Redirect to tasks page
+            browserHistory.push('/tasks')
         } catch (error) {
             console.error(error)
 
@@ -32,9 +27,14 @@ export const loginUser = (credentials) => {
 }
 
 // Logs the user out
-export const logoutUser = () => {
+export const logout = () => {
     return dispatch => {
-        dispatch({ type: types.LOGGED_OUT, true })
-        //localStorage.removeItem('id_token')
+        // Remove the token from local storage
+        localStorage.removeItem('token')
+        
+        dispatch({ type: types.LOGGED_OUT })
+
+        // Redirect to login page
+        browserHistory.push('/login')
     }
 }

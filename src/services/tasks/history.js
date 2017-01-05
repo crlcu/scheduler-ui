@@ -21,6 +21,6 @@ class History extends Api {
 }
 
 export default new History('http://localhost:1337/dev.machine:8000/api/tasks', {
-    username: 'admin@tasks-scheduler.com',
-    password: 'access88'
+    email:      'admin@tasks-scheduler.com',
+    password:   'access88'
 })

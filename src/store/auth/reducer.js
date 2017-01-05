@@ -2,8 +2,10 @@ import Immutable from 'seamless-immutable'
 import * as types from './actionTypes'
 
 const initialState = Immutable({
+    error:              '',
+    isAuthenticated:    localStorage.getItem('id_token') ? true : false,
     isFetching:         false,
-    isAuthenticated:    localStorage.getItem('id_token') ? true : false
+    user:               {}
 })
 
 // The auth reducer. The starting state sets authentication
@@ -11,28 +13,30 @@ const initialState = Immutable({
 // we would also want a util to check if the token is expired.
 export default function auth(state = initialState, action = {}) {
     switch (action.type) {
-        case types.LOGIN_REQUEST:
+        case types.LOGGING_IN:
             return state.merge({
-                isFetching: true,
-                isAuthenticated: false,
-                user: action.creds
+                error:              '',
+                isAuthenticated:    false,
+                isFetching:         true
             })
-        case types.LOGIN_SUCCESS:
+        case types.LOGGED_IN:
             return state.merge({
-                isFetching: false,
-                isAuthenticated: true,
-                errorMessage: ''
+                error:              '',
+                isAuthenticated:    true,
+                isFetching:         false,
+                user:               action.user
             })
         case types.LOGIN_FAILURE:
             return state.merge({
-                isFetching: false,
-                isAuthenticated: false,
-                errorMessage: action.message
+                error:              action.error,
+                isAuthenticated:    false,
+                isFetching:         false
             })
-        case types.LOGOUT_SUCCESS:
+        case types.LOGGED_OUT:
             return state.merge({
-                isFetching: true,
-                isAuthenticated: false
+                error:              '',
+                isAuthenticated:    false,
+                isFetching:         true
             })
         default:
             return state

@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router'
+import { browserHistory, withRouter } from 'react-router'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
+import * as actions from '../../store/auth/actions'
 import auth from '../../auth'
 
 class Login extends Component {
-    constructor () {
-        super()
-
-        this.state = {
-            error: false
+    componentDidMount() {
+        if (auth.loggedIn()) {
+            // Redirect to tasks page
+            browserHistory.push('/tasks')
         }
+
+        //this.props.actions.login({ email: 'email', password: 'password' })
     }
 
     handleSubmit(event) {
@@ -34,12 +38,14 @@ class Login extends Component {
     }
 
     render() {
+        const { error } = this.props
+        
         return (
             <form onSubmit={this.handleSubmit}>
                 <label><input ref="email" placeholder="email" defaultValue="joe@example.com" /></label>
                 <label><input ref="pass" placeholder="password" /></label> (hint: password1)<br />
                 <button type="submit">login</button>
-                {this.state.error && (
+                { error && (
                     <p>Bad login information</p>
                 )}
             </form>
@@ -47,4 +53,14 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login)
+// which props do we want to inject, given the global store state?
+const mapStateToProps = state => ( state.auth )
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(actions, dispatch)
+})
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login))
