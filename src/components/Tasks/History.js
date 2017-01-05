@@ -12,12 +12,12 @@ import Widget from '../Shared/Widget'
 class History extends Component {
     componentDidMount() {
         console.log(this.props.location)
-        this.props.actions.search(this.props.location.query.page)
+        this.props.actions.search({ page: this.props.location.query.page })
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.location.query.page !== nextProps.location.query.page) {
-            this.props.actions.search(this.props.location.query.page)
+            this.props.actions.search({ page: nextProps.location.query.page })
         }
     }
 
@@ -30,8 +30,8 @@ class History extends Component {
                     <div className="left">
                         <Pagination
                             activePage={ paginator.current_page }
-                            itemsCountPerPage={ paginator.per_page }
-                            totalItemsCount={ paginator.total || 0 }
+                            itemsCountPerPage={ parseInt(paginator.per_page || 0, 10) }
+                            totalItemsCount={ parseInt(paginator.total || 0, 10) }
                             pageRangeDisplayed={5}
 
                             onChange={ actions.changePage }
