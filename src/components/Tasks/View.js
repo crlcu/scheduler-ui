@@ -1,6 +1,7 @@
-import Highlight from'react-syntax-highlight'
 import React, { Component } from 'react'
+import Helmet from 'react-helmet'
 import { Icon, ProgressBar } from 'react-materialize'
+import Highlight from'react-syntax-highlight'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -58,6 +59,8 @@ class View extends Component {
 
         return (
             <div>
+                <Helmet title={ "Scheduler | Tasks | " + (task.name || '...') } />
+
                 <Widget
                     footer={ footer }
                     loading={ loading }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Helmet from 'react-helmet'
 import { Icon, Input } from 'react-materialize'
 import Pagination from 'react-js-pagination'
 import { bindActionCreators } from 'redux'
@@ -63,6 +64,8 @@ class Search extends Component {
                 loading={ loading }
                 title={ 'Tasks' }
             >
+                <Helmet title="Scheduler | Tasks" />
+
                 <table className="bordered highlight condensed">
                     <caption>
                         <div className="file-path-wrapper">
