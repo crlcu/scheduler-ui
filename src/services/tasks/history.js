@@ -1,8 +1,11 @@
+import queryString from 'query-string'
 import Api from '../api'
 
 class History extends Api {
     async search(id, args = {}) {
-        const url = `${this.baseUrl}/${id}/executions?page=${args.page}`
+        args.limit = 4;
+
+        const url = this.baseUrl + '/' + id + '/executions?' + queryString.stringify(args)
 
         const response = await fetch(url, {
             method:     'GET',

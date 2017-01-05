@@ -21,6 +21,17 @@ class History extends Component {
         }
     }
 
+    handleSearch(value) {
+        this.props.actions.search({ search: value })
+    }
+
+    watchChange(e) {
+        const value = e.target.value
+
+        clearTimeout(this.typingTimer)
+        this.typingTimer = setTimeout(() => this.handleSearch(value), 800)
+    }
+
     render() {
         const { actions, loading, paginator, task } = this.props
 
@@ -59,7 +70,13 @@ class History extends Component {
                 <table className="bordered highlight condensed">
                     <caption>
                         <div className="file-path-wrapper">
-                            <Input name="q" s={12} placeholder="Search ..." autoComplete="off" />
+                            <Input
+                                autoComplete="off"
+                                autoFocus
+                                name="q" s={12}
+                                onChange={ this.watchChange.bind(this) }
+                                placeholder="Search ..."
+                            />
                         </div>
                     </caption>
 

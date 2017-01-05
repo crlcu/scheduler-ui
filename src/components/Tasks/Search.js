@@ -9,6 +9,12 @@ import * as actions from '../../store/tasks/actions'
 import Widget from '../Shared/Widget'
 
 class Search extends Component {
+    constructor(props) {
+        super(props)
+
+        this.typingTimer = undefined
+    }
+
     componentDidMount() {
         this.props.actions.search({ page: this.props.location.query.page })
     }
@@ -19,8 +25,19 @@ class Search extends Component {
         }
     }
 
+    handleSearch(value) {
+        this.props.actions.search({ search: value })
+    }
+
+    watchChange(e) {
+        const value = e.target.value
+
+        clearTimeout(this.typingTimer)
+        this.typingTimer = setTimeout(() => this.handleSearch(value), 800)
+    }
+
     render() {
-        const { actions, loading, paginator } = this.props
+        const { actions, loading, paginator, search } = this.props
 
         const footer = (
             <div className="footer indigo lighten-5">
@@ -51,8 +68,10 @@ class Search extends Component {
                         <div className="file-path-wrapper">
                             <Input
                                 autoComplete="off"
-                                onChange={ this.handleChange }
+                                autoFocus
+                                defaultValue={ search }
                                 name="q" s={12}
+                                onChange={ this.watchChange.bind(this) }
                                 placeholder="Search ..."
                             />
                         </div>
@@ -105,12 +124,7 @@ class TasksRow extends React.Component {
 }
 
 // which props do we want to inject, given the global store state?
-const mapStateToProps = state => {
-    return {
-        loading:    state.tasks.loading,
-        paginator:  state.tasks.paginator
-    }
-}
+const mapStateToProps = state => ( state.tasks )
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)

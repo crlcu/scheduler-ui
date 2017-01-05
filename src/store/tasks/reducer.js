@@ -5,6 +5,7 @@ const initialState = Immutable({
     paginator: {
         data: []
     },
+    search: '',
     task: {}
 })
 
@@ -20,7 +21,8 @@ export default function reduce(state = initialState, action = {}) {
             })
         case types.SEARCH:
             return state.merge({
-                paginator: action.paginator
+                paginator:  action.paginator,
+                search:     action.search || ''
             })
         case types.VIEW:
             return state.merge({

@@ -16,7 +16,7 @@ export const search = (args = {}) => {
         try {
             const paginator = await api.search(args)
 
-            dispatch({ type: types.SEARCH, paginator })
+            dispatch({ type: types.SEARCH, paginator, search: args.search })
         } catch (error) {
             console.error(error)
         }
