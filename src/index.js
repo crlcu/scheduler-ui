@@ -18,7 +18,9 @@ import Logout from './components/Auth/Logout'
 import Tasks from './containers/Tasks'
 import TasksSearch from './components/Tasks/Search'
 import TasksView from './components/Tasks/View'
+
 import RolesSearch from './components/Roles/Search'
+import RolesEdit from './components/Roles/Edit'
 
 const middleware = [ thunk ]
 
@@ -62,7 +64,11 @@ ReactDOM.render(
 
                 <Route path="/timeline" component={TasksSearch} />
                 
-                <Route path="/roles" component={RolesSearch} />>
+                <Route path="/roles">
+                    <IndexRoute component={RolesSearch} />
+
+                    <Route path=":id/edit" component={RolesEdit} />
+                </Route>
             </Route>
         </Router>
     </Provider>,

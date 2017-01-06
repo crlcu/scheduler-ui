@@ -35,7 +35,7 @@ class History extends Component {
         const { actions, loading, paginator, task } = this.props
 
         const footer = (
-            <div className="footer indigo lighten-5">
+            <div>
                 <div className="row">
                     <div className="left">
                         { paginator.last_page > 1 && (

@@ -23,7 +23,7 @@ class View extends Component {
         const { loading, task } = this.props
 
         const footer = (
-            <div className="footer indigo lighten-5">
+            <div>
                 <Link 
                     className="btn-floating waves-effect waves-light red"
                     to={"/tasks/" + task.id + "/delete"} 

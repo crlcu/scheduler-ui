@@ -9,14 +9,33 @@ export const changePage = (page) => {
     }
 }
 
-export const remove = (id) => {
+export const edit = (id) => {
     return async(dispatch, getState) => {
         dispatch({ type: types.LOADING, loading: true })
 
         try {
-            const response = await api.remove(id)
+            const role = await api.edit(id)
 
-            dispatch(search())
+            dispatch({ type: types.EDIT, role })
+        } catch (error) {
+            console.error(error)
+        }
+
+        dispatch({ type: types.LOADING, loading: false })
+    }
+}
+
+export const update = (id, args) => {
+    return async(dispatch, getState) => {
+        dispatch({ type: types.LOADING, loading: true })
+
+        try {
+            const role = await api.update(id, args)
+
+            dispatch({ type: types.UPDATED, role })
+            
+            // Redirect to roles page
+            browserHistory.push('/roles')
         } catch (error) {
             console.error(error)
         }
@@ -33,6 +52,22 @@ export const search = (args = {}) => {
             const paginator = await api.search(args)
 
             dispatch({ type: types.SEARCH, paginator })
+        } catch (error) {
+            console.error(error)
+        }
+
+        dispatch({ type: types.LOADING, loading: false })
+    }
+}
+
+export const remove = (id) => {
+    return async(dispatch, getState) => {
+        dispatch({ type: types.LOADING, loading: true })
+
+        try {
+            await api.remove(id)
+
+            dispatch(search())
         } catch (error) {
             console.error(error)
         }

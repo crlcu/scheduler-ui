@@ -42,7 +42,7 @@ class Search extends Component {
         const { actions, loading, paginator, search } = this.props
 
         const footer = (
-            <div className="footer indigo lighten-5">
+            <div>
                 { paginator.last_page > 1 && (
                     <Pagination
                         activePage={ paginator.current_page }

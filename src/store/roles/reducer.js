@@ -11,6 +11,10 @@ const initialState = Immutable({
 
 export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
+        case types.EDIT:
+            return state.merge({
+                role: action.role
+            })
         case types.LOADING:
             return state.merge({
                 loading: action.loading
@@ -21,6 +25,10 @@ export default function reduce(state = initialState, action = {}) {
                 search:     action.search || ''
             })
         case types.VIEW:
+            return state.merge({
+                role: action.role
+            })
+        case types.UPDATED:
             return state.merge({
                 role: action.role
             })
