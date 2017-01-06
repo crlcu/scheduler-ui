@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 import auth from './auth'
 
 import * as reducers from './store/reducers'
-import Root from './containers/Root'
+import LoggedIn from './containers/LoggedIn'
 
 import Login from './components/Auth/Login'
 import Logout from './components/Auth/Logout'
@@ -36,22 +36,13 @@ const store = createStore(
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
 
-function requireAuth(nextState, replace) {
-    if (!auth.loggedIn()) {
-        replace({
-            pathname: '/login',
-            state: { nextPathname: nextState.location.pathname }
-        })
-    }
-}
-
 ReactDOM.render(
     <Provider store={store}>
         { /* Tell the Router to use our enhanced history */ }
         <Router history={history}>
             <Route path="login" component={Login} />
 
-            <Route path="/" component={Root} onEnter={requireAuth}>
+            <Route path="/" component={LoggedIn} onEnter={(nextState, replace) => auth.check(nextState, replace)}>
                 <Route path="logout" component={Logout} />
 
                 <Route path="/tasks" component={Tasks}>

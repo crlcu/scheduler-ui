@@ -3,7 +3,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import '../../public/css/style.min.css'
 
-const Root = ({children}) => (
+const LoggedIn = ({children}) => (
     <div className="App">
         <Navbar />
         <div className="container">
@@ -12,4 +12,4 @@ const Root = ({children}) => (
     </div>
 )
 
-export default Root
+export default LoggedIn

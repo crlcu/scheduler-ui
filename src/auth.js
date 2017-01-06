@@ -1,7 +1,16 @@
+import * as storage from './storage'
+
 module.exports = {
     loggedIn() {
-        return !!localStorage.token
+        return !!storage.get('token')
     },
 
-    onChange() {}
+    check(nextState, replace) {
+        if (!this.loggedIn()) {
+            replace({
+                pathname: '/login',
+                state: { nextPathname: nextState.location.pathname }
+            })
+        }
+    }
 }

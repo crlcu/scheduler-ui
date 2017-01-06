@@ -1,16 +1,14 @@
 import Immutable from 'seamless-immutable'
 import * as types from './actionTypes'
+import * as storage from '../../storage'
 
 const initialState = Immutable({
     error:              '',
-    isAuthenticated:    localStorage.getItem('id_token') ? true : false,
+    isAuthenticated:    storage.get('token') ? true : false,
     isFetching:         false,
-    user:               {}
+    user:               JSON.parse(storage.get('user') || '{}')
 })
 
-// The auth reducer. The starting state sets authentication
-// based on a token being in local storage. In a real app,
-// we would also want a util to check if the token is expired.
 export default function auth(state = initialState, action = {}) {
     switch (action.type) {
         case types.LOGGING_IN:

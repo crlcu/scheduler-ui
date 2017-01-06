@@ -23,6 +23,21 @@ class Auth extends Api {
 
         return await response.json()
     }
+
+    async logout() {
+        const url = this.baseUrl + '/logout'
+
+        const response = await fetch(url, {
+            method:     'GET',
+            headers:    this.getHeaders()
+        })
+
+        if (!response.ok) {
+            throw new Error(`Request failed, HTTP status ${response.status}`)
+        }
+
+        return await response.json()
+    }
 }
 
 export default new Auth('http://localhost:1337/dev.machine:8000/api')

@@ -1,11 +1,12 @@
 import base64 from 'base-64'
+import * as storage from '../storage'
 
 export default class Api {
-    constructor(baseUrl, options = {}) {
+    constructor(baseUrl) {
         this.baseUrl = baseUrl
 
-        this.email = options.email
-        this.password = options.password
+        this.email = storage.get('email')
+        this.password = storage.get('password')
     }
 
     getHeaders = () => {

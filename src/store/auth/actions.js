@@ -1,23 +1,35 @@
 import { browserHistory } from 'react-router'
 import * as types from './actionTypes'
 import api from '../../services/auth'
+import * as storage from '../../storage'
 
 // Calls the API to get a token and
 // dispatches actions along the way
 export const login = (credentials) => {
     return async(dispatch, getState) => {
         dispatch({ type: types.LOGGING_IN, credentials })
-        
+
         try {
-            const user = await api.login(credentials.email, credentials.pasword)
+            const response = await api.login(credentials.email, credentials.password)
             
-            // If login was successful, set the token in local storage
-            localStorage.setItem('token', user.email)
+            if ( response.success ) {
+                // Temporary put these into storage
+                storage.put('email', credentials.email)
+                storage.put('password', credentials.password)
 
-            dispatch({ type: types.LOGGED_IN, user })
+                // If login was successful, set the token in storage
+                storage.put('token', response.token)
 
-            // Redirect to tasks page
-            browserHistory.push('/tasks')
+                // And set user details
+                storage.put('user', JSON.stringify(response.user))
+
+                dispatch({ type: types.LOGGED_IN, user: response.user })
+
+                // Redirect to tasks page
+                browserHistory.push('/tasks')
+            } else {
+                dispatch({ type: types.LOGIN_FAILURE, error: { message: 'Invalid email or password.' } })
+            }
         } catch (error) {
             console.error(error)
 
@@ -28,9 +40,15 @@ export const login = (credentials) => {
 
 // Logs the user out
 export const logout = () => {
-    return dispatch => {
-        // Remove the token from local storage
-        localStorage.removeItem('token')
+    return async(dispatch, getState) => {
+        try {
+            await api.logout()
+        } catch (error) {
+            console.error(error)
+        }
+
+        // Clear the storage
+        storage.clear()
         
         dispatch({ type: types.LOGGED_OUT })
 

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import Helmet from 'react-helmet'
+import { Button, Card, Input, Row } from 'react-materialize'
 import { browserHistory, withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -12,28 +14,14 @@ class Login extends Component {
             // Redirect to tasks page
             browserHistory.push('/tasks')
         }
-
-        //this.props.actions.login({ email: 'email', password: 'password' })
     }
 
     handleSubmit(event) {
         event.preventDefault()
 
-        const email = this.refs.email.value
-        const pass = this.refs.pass.value
-
-        auth.login(email, pass, (loggedIn) => {
-            if (!loggedIn) {
-                return this.setState({ error: true })
-            }
-
-            const { location } = this.props
-
-            if (location.state && location.state.nextPathname) {
-                this.props.router.replace(location.state.nextPathname)
-            } else {
-                this.props.router.replace('/')
-            }
+        this.props.actions.login({
+            email:      this.refs.email.state.value,
+            password:   this.refs.password.state.value
         })
     }
 
@@ -41,14 +29,24 @@ class Login extends Component {
         const { error } = this.props
         
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label><input ref="email" placeholder="email" defaultValue="joe@example.com" /></label>
-                <label><input ref="pass" placeholder="password" /></label> (hint: password1)<br />
-                <button type="submit">login</button>
-                { error && (
-                    <p>Bad login information</p>
-                )}
-            </form>
+            <Row>
+                <Helmet title={ "Scheduler | Login" } />
+
+                <form className="col offset-s1 s10 offset-m2 m8 offset-l4 l4" onSubmit={this.handleSubmit.bind(this)}>
+                    <Card className="card-panel z-depth-1">
+                        <Row>
+                            <Input type="email" name="email" ref="email" label="Email" s={12} autoFocus />
+                            <Input type="password" name="password" ref="password" label="Password" s={12} />
+                            
+                            { error && (
+                                <p>{ error.message }</p>
+                            )}
+                            
+                            <Button type="submit" className="green col s12" waves='light'>Login</Button>
+                        </Row>
+                    </Card>
+                </form>
+            </Row>
         )
     }
 }
