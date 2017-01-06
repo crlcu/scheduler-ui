@@ -38,19 +38,21 @@ class History extends Component {
             <div className="footer indigo lighten-5">
                 <div className="row">
                     <div className="left">
-                        <Pagination
-                            activePage={ paginator.current_page }
-                            itemsCountPerPage={ parseInt(paginator.per_page || 0, 10) }
-                            totalItemsCount={ parseInt(paginator.total || 0, 10) }
-                            pageRangeDisplayed={5}
+                        { paginator.last_page > 1 && (
+                            <Pagination
+                                activePage={ paginator.current_page }
+                                itemsCountPerPage={ parseInt(paginator.per_page || 0, 10) }
+                                totalItemsCount={ parseInt(paginator.total || 0, 10) }
+                                pageRangeDisplayed={5}
 
-                            onChange={ actions.changePage }
+                                onChange={ actions.changePage }
 
-                            prevPageText={ <Icon>chevron_left</Icon> }
-                            nextPageText={ <Icon>chevron_right</Icon> }
-                            firstPageText={ <Icon>chevron_left</Icon> }
-                            lastPageText={ <Icon>chevron_right</Icon> }
-                        />
+                                prevPageText={ <Icon>chevron_left</Icon> }
+                                nextPageText={ <Icon>chevron_right</Icon> }
+                                firstPageText={ <Icon>chevron_left</Icon> }
+                                lastPageText={ <Icon>chevron_right</Icon> }
+                            />
+                        )}
                     </div>
                     <div className="right">
                         <Link 

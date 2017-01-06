@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import { Icon, Input } from 'react-materialize'
+import { Button, Icon, Input } from 'react-materialize'
 import Pagination from 'react-js-pagination'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import * as actions from '../../store/tasks/actions'
+import * as actions from '../../store/roles/actions'
+import {Separator} from '../Shared/Util'
 import Widget from '../Shared/Widget'
 
 class Search extends Component {
@@ -64,9 +65,9 @@ class Search extends Component {
             <Widget
                 footer={ footer }
                 loading={ loading }
-                title={ 'Tasks' }
+                title={ 'Roles' }
             >
-                <Helmet title="Scheduler | Tasks" />
+                <Helmet title="Scheduler | Roles" />
 
                 <table className="bordered highlight condensed">
                     <caption>
@@ -85,19 +86,18 @@ class Search extends Component {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Average duration</th>
-                            <th>Schedule</th>
-                            <th width="150px">Next due</th>
-                            <th width="120px">
-                                <a href="/tasks" className="btn-floating waves-effect waves-light green right" title="Add">
-                                    <i className="material-icons">add</i>
-                                </a>
+                            <th>Description</th>
+                            <th>Groups with this role</th>
+                            <th width="100px">
+                                <Link className="btn-floating waves-effect waves-light green right" to="/roles/create">
+                                    <Icon>add</Icon>
+                                </Link>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {paginator.data.map((row, i) =>
-                            <Row row={ row } key={ i } />
+                            <Row actions={ actions } row={ row } key={ i } />
                         )}
                     </tbody>
                 </table>
@@ -107,21 +107,28 @@ class Search extends Component {
 }
 
 class Row extends React.Component {
+    remove(id) {
+        if (confirm('Are you sure?')) {
+            this.props.actions.remove(id)
+        }
+    }
+
     render() {
         const { row } = this.props
 
         return (
             <tr>
+                <td>{ row.name }</td>
+                <td>{ row.description }</td>
+                <td>{ row.groups.length }</td>
                 <td>
-                    <Link to={ "/tasks/" + row.id} title="View history">{ row.name }</Link>
-                </td>
-                <td>{ row.average_for_humans }</td>
-                <td>
-                    <span title={ row.cron_for_humans }>{ row.schedule }</span>
-                </td>
-                <td>{ row.next_due }</td>
-                <td>
+                    <Button floating className='red' waves='light' icon='delete' onClick={ () => { this.remove(row.id) } } />
                     
+                    <Separator />
+                    
+                    <Link className="btn-floating waves-effect waves-light blue" to={ "/roles/" + row.id + "/edit" }>
+                        <Icon>edit</Icon>
+                    </Link>
                 </td>
             </tr>
         )
@@ -129,7 +136,7 @@ class Row extends React.Component {
 }
 
 // which props do we want to inject, given the global store state?
-const mapStateToProps = state => ( state.tasks )
+const mapStateToProps = state => ( state.roles )
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)
