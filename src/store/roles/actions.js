@@ -9,6 +9,25 @@ export const changePage = (page) => {
     }
 }
 
+export const create = (args) => {
+    return async(dispatch, getState) => {
+        dispatch({ type: types.LOADING, loading: true })
+
+        try {
+            const role = await api.create(args)
+
+            dispatch({ type: types.CREATED, role })
+            
+            // Redirect to roles page
+            browserHistory.push('/roles')
+        } catch (error) {
+            console.error(error)
+        }
+
+        dispatch({ type: types.LOADING, loading: false })
+    }
+}
+
 export const edit = (id) => {
     return async(dispatch, getState) => {
         dispatch({ type: types.LOADING, loading: true })

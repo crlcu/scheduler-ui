@@ -20,6 +20,7 @@ import TasksSearch from './components/Tasks/Search'
 import TasksView from './components/Tasks/View'
 
 import RolesSearch from './components/Roles/Search'
+import RolesCreate from './components/Roles/Create'
 import RolesEdit from './components/Roles/Edit'
 
 const middleware = [ thunk ]
@@ -67,6 +68,7 @@ ReactDOM.render(
                 <Route path="/roles">
                     <IndexRoute component={RolesSearch} />
 
+                    <Route path="create" component={RolesCreate} />
                     <Route path=":id/edit" component={RolesEdit} />
                 </Route>
             </Route>

@@ -13,7 +13,8 @@ export default class Api {
         var headers = new Headers()
         
         headers.append('Accept', 'application/json')
-
+        headers.append('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8')
+        
         if (this.email) {
             headers.append('Authorization', 'Basic ' + base64.encode(this.email + ':' + this.password))
         }
