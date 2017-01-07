@@ -8,32 +8,28 @@ import * as actions from '../../store/roles/actions'
 
 import Widget from '../Shared/Widget'
 
-class Edit extends Component {
-    componentDidMount() {
-        this.props.actions.edit(this.props.params.id)
-    }
-
+class Create extends Component {
     handleSubmit(event) {
         event.preventDefault()
 
-        this.props.actions.update(this.props.role.id, {
+        this.props.actions.create({
             name:           this.refs.name.state.value,
             description:    this.refs.description.state.value
         })
     }
 
     render() {
-        const { loading, role, validation } = this.props
+        const { loading, validation } = this.props
 
         const footer = (
             <Button type="submit" className="green right" waves="light">
                 <Icon left>done</Icon> Save
             </Button>
         )
-
+        
         return (
             <div>
-                <Helmet title={ "Scheduler | Roles | " + (role.name || '...') } />
+                <Helmet title={ "Scheduler | Roles | Create" } />
 
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <Widget
@@ -43,7 +39,7 @@ class Edit extends Component {
                     >
                         <Row>
                             <Input
-                                defaultValue={ validation.old.name || role.name }
+                                defaultValue={ validation.old.name }
                                 type="text"
                                 name="name"
                                 ref="name"
@@ -52,9 +48,9 @@ class Edit extends Component {
                             />
 
                             <Input
-                                defaultValue={ validation.old.description || role.description }
-                                type="text" 
-                                name="description" 
+                                defaultValue={ validation.old.description }
+                                type="text"
+                                name="description"
                                 ref="description"
                                 label="Description" s={12} error={ validation.errorFor('description') }
                                 validate
@@ -70,7 +66,6 @@ class Edit extends Component {
 // which props do we want to inject, given the global store state?
 const mapStateToProps = state => ({
     loading:    state.roles.loading,
-    role:       state.roles.role,
     validation: state.validation
 })
 
@@ -81,4 +76,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Edit)
+)(Create)

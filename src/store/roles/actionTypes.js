@@ -1,4 +1,5 @@
 // strings should be unique across reducers so namespace them with the reducer name
+
 export const LOADING = 'roles.LOADING'
 
 export const CREATE = 'roles.CREATE'

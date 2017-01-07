@@ -10,7 +10,9 @@ import thunk from 'redux-thunk'
 
 import auth from './auth'
 
+import * as validation from './store/validation/actionTypes'
 import * as reducers from './store/reducers'
+
 import LoggedIn from './containers/LoggedIn'
 
 import Login from './components/Auth/Login'
@@ -36,6 +38,15 @@ const store = createStore(
     }),
     applyMiddleware(...middleware)
 )
+
+store.subscribe(function fetcher(a, b, c) {
+    const state = store.getState()
+
+    // Clear validation each time loading smth and validation failed
+    if (state.lastAction.type.match(/loading/ig) && state.lastAction.loading && state.validation.failed) {
+        store.dispatch({ type: validation.CLEAR })
+    }
+})
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)

@@ -1,5 +1,6 @@
 import { browserHistory } from 'react-router'
 
+import * as validation from '../validation/actionTypes'
 import * as types from './actionTypes'
 import api from '../../services/roles'
 
@@ -14,12 +15,29 @@ export const create = (args) => {
         dispatch({ type: types.LOADING, loading: true })
 
         try {
-            const role = await api.create(args)
+            const response = await api.create(args)
 
-            dispatch({ type: types.CREATED, role })
-            
-            // Redirect to roles page
-            browserHistory.push('/roles')
+            if (response.success) {
+                dispatch({ type: types.CREATED, role: response.data })
+                
+                // Redirect to roles page
+                browserHistory.push('/roles')
+            } else {
+                switch(response.reason) {
+                    case 'validation':
+                        dispatch({
+                            type: validation.FAILED,
+                            validation: {
+                                errors: response.errors,
+                                old: args,
+                                failed: true 
+                            }
+                        })
+                        break
+                    default:
+                        console.log(response)
+                }
+            }
         } catch (error) {
             console.error(error)
         }
@@ -49,12 +67,29 @@ export const update = (id, args) => {
         dispatch({ type: types.LOADING, loading: true })
 
         try {
-            const role = await api.update(id, args)
+            const response = await api.update(id, args)
 
-            dispatch({ type: types.UPDATED, role })
-            
-            // Redirect to roles page
-            browserHistory.push('/roles')
+            if (response.success) {
+                dispatch({ type: types.UPDATED, role: response.data })
+                
+                // Redirect to roles page
+                browserHistory.push('/roles')
+            } else {
+                switch(response.reason) {
+                    case 'validation':
+                        dispatch({
+                            type: validation.FAILED,
+                            validation: {
+                                errors: response.errors,
+                                old: args,
+                                failed: true 
+                            }
+                        })
+                        break
+                    default:
+                        console.log(response)
+                }
+            }
         } catch (error) {
             console.error(error)
         }

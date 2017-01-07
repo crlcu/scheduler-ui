@@ -12,7 +12,15 @@ class Endpoint extends Api {
         })
 
         if (!response.ok) {
-            throw new Error(`Request failed, HTTP status ${response.status}`)
+            switch(response.status) {
+                case 422:
+                    return {
+                        reason: 'validation',
+                        errors: await response.json()
+                    }
+                default:
+                    throw new Error(`Request failed, HTTP status ${response.status}`)
+            }
         }
         
         return await response.json()
@@ -68,17 +76,22 @@ class Endpoint extends Api {
     async update(id, args) {
         const url = `${this.baseUrl}/${id}`
 
-        const headers = this.getHeaders()
-        headers.append('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8')
-
         const response = await fetch(url, {
             method:     'PUT',
-            headers:    headers,
+            headers:    this.getHeaders(),
             body:       queryString.stringify(args)
         })
 
         if (!response.ok) {
-            throw new Error(`Request failed, HTTP status ${response.status}`)
+            switch(response.status) {
+                case 422:
+                    return {
+                        reason: 'validation',
+                        errors: await response.json()
+                    }
+                default:
+                    throw new Error(`Request failed, HTTP status ${response.status}`)
+            }
         }
         
         return await response.json()

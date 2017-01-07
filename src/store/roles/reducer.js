@@ -2,11 +2,12 @@ import Immutable from 'seamless-immutable'
 import * as types from './actionTypes'
 
 const initialState = Immutable({
+    loading: false,
     paginator: {
         data: []
     },
-    search: '',
-    role: {}
+    role: {},
+    search: ''
 })
 
 export default function reduce(state = initialState, action = {}) {
@@ -24,11 +25,11 @@ export default function reduce(state = initialState, action = {}) {
                 paginator:  action.paginator,
                 search:     action.search || ''
             })
-        case types.VIEW:
+        case types.UPDATED:
             return state.merge({
                 role: action.role
             })
-        case types.UPDATED:
+        case types.VIEW:
             return state.merge({
                 role: action.role
             })
