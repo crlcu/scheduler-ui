@@ -6,7 +6,7 @@ const initialState = Immutable({
     paginator: {
         data: []
     },
-    role: {},
+    group: {},
     search: ''
 })
 
@@ -14,7 +14,7 @@ export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
         case types.EDIT:
             return state.merge({
-                role: action.role
+                group: action.group
             })
         case types.LOADING:
             return state.merge({
@@ -27,7 +27,7 @@ export default function reduce(state = initialState, action = {}) {
             })
         case types.UPDATED:
             return state.merge({
-                role: action.role
+                group: action.group
             })
         default:
             return state

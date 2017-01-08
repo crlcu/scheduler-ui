@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
-import { Button, Card, Input, Row } from 'react-materialize'
+import { Button, Card, Col, Input, ProgressBar, Row } from 'react-materialize'
 import { browserHistory, withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -26,7 +26,7 @@ class Login extends Component {
     }
 
     render() {
-        const { error } = this.props
+        const { error, loading } = this.props
         
         return (
             <Row>
@@ -35,13 +35,13 @@ class Login extends Component {
                 <form className="col offset-s1 s10 offset-m2 m8 offset-l4 l4" onSubmit={this.handleSubmit.bind(this)}>
                     <Card className="card-panel z-depth-1">
                         <Row>
-                            <Input type="email" name="email" ref="email" label="Email" s={12} autoFocus />
+                            <Input type="email" name="email" ref="email" label="Email" s={12} autoFocus validate error={ error.message } />
                             <Input type="password" name="password" ref="password" label="Password" s={12} />
                             
-                            { error && (
-                                <p>{ error.message }</p>
+                            { loading && (
+                                <Row><Col s={ 12 }><ProgressBar /></Col></Row>
                             )}
-                            
+
                             <Button type="submit" className="green col s12" waves='light'>Login</Button>
                         </Row>
                     </Card>

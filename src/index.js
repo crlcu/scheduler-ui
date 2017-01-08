@@ -17,6 +17,11 @@ import LoggedIn from './containers/LoggedIn'
 
 import Login from './components/Auth/Login'
 import Logout from './components/Auth/Logout'
+
+import GroupsSearch from './components/Groups/Search'
+import GroupsCreate from './components/Groups/Create'
+import GroupsEdit from './components/Groups/Edit'
+
 import Tasks from './containers/Tasks'
 import TasksSearch from './components/Tasks/Search'
 import TasksView from './components/Tasks/View'
@@ -80,6 +85,13 @@ ReactDOM.render(
 
                 <Route path="/timeline" component={ TasksSearch } onEnter={ (nextState, replace) => auth.hasRole(nextState, replace, 'has-timeline') } />
                 
+                <Route path="/groups" onEnter={ (nextState, replace) => auth.hasRole(nextState, replace, 'manage-groups') }>
+                    <IndexRoute component={ GroupsSearch } />
+
+                    <Route path="create" component={ GroupsCreate } />
+                    <Route path=":id/edit" component={ GroupsEdit } />
+                </Route>
+
                 <Route path="/roles" onEnter={ (nextState, replace) => auth.hasRole(nextState, replace, 'manage-roles') }>
                     <IndexRoute component={ RolesSearch } />
 

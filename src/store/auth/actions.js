@@ -7,7 +7,7 @@ import * as storage from '../../storage'
 // dispatches actions along the way
 export const login = (credentials) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOGGING_IN, credentials })
+        dispatch({ type: types.LOADING, loading: true })
 
         try {
             const response = await api.login(credentials.email, credentials.password)
@@ -29,8 +29,10 @@ export const login = (credentials) => {
         } catch (error) {
             console.error(error)
 
-            dispatch({ type: types.LOGIN_FAILURE, error })
+            dispatch({ type: types.LOGIN_FAILURE, error: { message: 'Invalid email or password.' } })
         }
+
+        dispatch({ type: types.LOADING, loading: false })
     }
 }
 

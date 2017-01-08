@@ -98,4 +98,4 @@ class Endpoint extends Api {
     }
 }
 
-export default new Endpoint('http://localhost:1337/dev.machine:8000/api/roles')
+export default new Endpoint('http://localhost:1337/dev.machine:8000/api/groups')

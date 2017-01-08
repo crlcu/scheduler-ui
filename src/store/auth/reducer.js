@@ -4,37 +4,29 @@ import * as storage from '../../storage'
 
 const initialState = Immutable({
     error:              '',
-    isAuthenticated:    storage.get('token') ? true : false,
-    isFetching:         false,
+    isAuthenticated:    !!storage.get('token'),
+    loading:            false,
     user:               JSON.parse(storage.get('user') || '{}')
 })
 
 export default function auth(state = initialState, action = {}) {
     switch (action.type) {
-        case types.LOGGING_IN:
+        case types.LOADING:
             return state.merge({
-                error:              '',
-                isAuthenticated:    false,
-                isFetching:         true
+                loading: action.loading
             })
         case types.LOGGED_IN:
             return state.merge({
-                error:              '',
-                isAuthenticated:    true,
-                isFetching:         false,
-                user:               action.user
+                error:  '',
+                user:   action.user
             })
         case types.LOGIN_FAILURE:
             return state.merge({
-                error:              action.error,
-                isAuthenticated:    false,
-                isFetching:         false
+                error:  action.error
             })
         case types.LOGGED_OUT:
             return state.merge({
-                error:              '',
-                isAuthenticated:    false,
-                isFetching:         true
+                error:  ''
             })
         default:
             return state
