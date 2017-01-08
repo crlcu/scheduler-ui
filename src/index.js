@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import auth from './auth'
 
-import * as validation from './store/validation/actionTypes'
+import ActionType from './models/ActionType'
 import * as reducers from './store/reducers'
 
 import LoggedIn from './containers/LoggedIn'
@@ -45,6 +45,8 @@ const store = createStore(
     }),
     applyMiddleware(...middleware)
 )
+
+const validation = new ActionType('validation')
 
 store.subscribe(function fetcher(a, b, c) {
     const state = store.getState()

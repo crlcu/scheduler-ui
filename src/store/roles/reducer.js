@@ -1,5 +1,7 @@
 import Immutable from 'seamless-immutable'
-import * as types from './actionTypes'
+import ActionType from '../../models/ActionType'
+
+const actions = new ActionType('roles')
 
 const initialState = Immutable({
     loading: false,
@@ -12,20 +14,20 @@ const initialState = Immutable({
 
 export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
-        case types.EDIT:
+        case actions.EDIT:
             return state.merge({
                 role: action.role
             })
-        case types.LOADING:
+        case actions.LOADING:
             return state.merge({
                 loading: action.loading
             })
-        case types.SEARCH:
+        case actions.SEARCH:
             return state.merge({
                 paginator:  action.paginator,
                 search:     action.search || ''
             })
-        case types.UPDATED:
+        case actions.UPDATED:
             return state.merge({
                 role: action.role
             })

@@ -1,6 +1,8 @@
 import Immutable from 'seamless-immutable'
-import * as types from './actionTypes'
+import ActionType from '../../models/ActionType'
 import * as storage from '../../storage'
+
+const actions = new ActionType('auth')
 
 const initialState = Immutable({
     error:              '',
@@ -11,20 +13,20 @@ const initialState = Immutable({
 
 export default function auth(state = initialState, action = {}) {
     switch (action.type) {
-        case types.LOADING:
+        case actions.LOADING:
             return state.merge({
                 loading: action.loading
             })
-        case types.LOGGED_IN:
+        case actions.LOGGED_IN:
             return state.merge({
                 error:  '',
                 user:   action.user
             })
-        case types.LOGIN_FAILURE:
+        case actions.LOGIN_FAILURE:
             return state.merge({
                 error:  action.error
             })
-        case types.LOGGED_OUT:
+        case actions.LOGGED_OUT:
             return state.merge({
                 error:  ''
             })

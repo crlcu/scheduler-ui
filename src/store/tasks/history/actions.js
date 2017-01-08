@@ -1,7 +1,8 @@
 import { browserHistory } from 'react-router'
-
-import * as types from './actionTypes'
+import ActionType from '../../../models/ActionType'
 import api from '../../../services/tasks/history'
+
+const actions = new ActionType('tasks.history')
 
 export const changePage = (page) => {
     return (dispatch, getState) => {
@@ -13,18 +14,18 @@ export const changePage = (page) => {
 
 export const search = (args = {}) => {
     return async(dispatch, getState, x) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             const state = getState()
 
             const paginator = await api.search(state.tasks.task.id, args)
 
-            dispatch({ type: types.SEARCH, paginator })
+            dispatch({ type: actions.SEARCH, paginator })
         } catch (error) {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }

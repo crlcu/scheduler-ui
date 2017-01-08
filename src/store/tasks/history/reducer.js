@@ -1,5 +1,7 @@
 import Immutable from 'seamless-immutable'
-import * as types from './actionTypes'
+import ActionType from '../../../models/ActionType'
+
+const actions = new ActionType('tasks.history')
 
 const initialState = Immutable({
     paginator: {
@@ -10,11 +12,11 @@ const initialState = Immutable({
 
 export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
-        case types.LOADING:
+        case actions.LOADING:
             return state.merge({
                 loading: action.loading
             })
-        case types.SEARCH:
+        case actions.SEARCH:
             return state.merge({
                 paginator:  action.paginator,
                 search:     action.search || ''

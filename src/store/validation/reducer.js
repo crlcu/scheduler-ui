@@ -1,5 +1,7 @@
 import Immutable from 'seamless-immutable'
-import * as types from './actionTypes'
+import ActionType from '../../models/ActionType'
+
+const actions = new ActionType('validation')
 
 const initialState = Immutable({
     errors:     {},
@@ -12,9 +14,9 @@ const initialState = Immutable({
 
 export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
-        case types.FAILED:
+        case actions.FAILED:
             return state.merge(action.validation)
-        case types.CLEAR:
+        case actions.CLEAR:
             return initialState
         default:
             return state

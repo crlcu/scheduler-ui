@@ -1,8 +1,9 @@
 import { browserHistory } from 'react-router'
-
-import * as validation from '../validation/actionTypes'
-import * as types from './actionTypes'
+import ActionType from '../../models/ActionType'
 import api from '../../services/roles'
+
+const actions = new ActionType('roles')
+const validation = new ActionType('validation')
 
 export const changePage = (page) => {
     return (dispatch, getState) => {
@@ -12,13 +13,13 @@ export const changePage = (page) => {
 
 export const create = (args) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             const response = await api.create(args)
 
             if (response.success) {
-                dispatch({ type: types.CREATED, role: response.data })
+                dispatch({ type: actions.CREATED, role: response.data })
                 
                 // Redirect to roles page
                 browserHistory.push('/roles')
@@ -42,35 +43,35 @@ export const create = (args) => {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }
 
 export const edit = (id) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             const role = await api.edit(id)
 
-            dispatch({ type: types.EDIT, role })
+            dispatch({ type: actions.EDIT, role })
         } catch (error) {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }
 
 export const update = (id, args) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             const response = await api.update(id, args)
 
             if (response.success) {
-                dispatch({ type: types.UPDATED, role: response.data })
+                dispatch({ type: actions.UPDATED, role: response.data })
                 
                 // Redirect to roles page
                 browserHistory.push('/roles')
@@ -94,29 +95,29 @@ export const update = (id, args) => {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }
 
 export const search = (args = {}) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             const paginator = await api.search(args)
 
-            dispatch({ type: types.SEARCH, paginator })
+            dispatch({ type: actions.SEARCH, paginator })
         } catch (error) {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }
 
 export const remove = (id) => {
     return async(dispatch, getState) => {
-        dispatch({ type: types.LOADING, loading: true })
+        dispatch({ type: actions.LOADING, loading: true })
 
         try {
             await api.remove(id)
@@ -126,6 +127,6 @@ export const remove = (id) => {
             console.error(error)
         }
 
-        dispatch({ type: types.LOADING, loading: false })
+        dispatch({ type: actions.LOADING, loading: false })
     }
 }
