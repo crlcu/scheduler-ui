@@ -4,13 +4,10 @@ import Api from './api'
 class Auth extends Api {
     async login(email, password) {
         const url = this.baseUrl + '/login'
-        const headers = this.getHeaders()
-
-        headers.append('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8')
 
         const response = await fetch(url, {
             method:     'POST',
-            headers:    headers,
+            headers:    this.getHeaders(),
             body:       queryString.stringify({
                 email:      email,
                 password:   password

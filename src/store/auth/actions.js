@@ -13,10 +13,6 @@ export const login = (credentials) => {
             const response = await api.login(credentials.email, credentials.password)
             
             if ( response.success ) {
-                // Temporary put these into storage
-                storage.put('email', credentials.email)
-                storage.put('password', credentials.password)
-
                 // If login was successful, set the token in storage
                 storage.put('token', response.token)
 
@@ -25,8 +21,8 @@ export const login = (credentials) => {
 
                 dispatch({ type: types.LOGGED_IN, user: response.user })
 
-                // Redirect to tasks page
-                browserHistory.push('/tasks')
+                // Redirect to home page
+                browserHistory.push('/')
             } else {
                 dispatch({ type: types.LOGIN_FAILURE, error: { message: 'Invalid email or password.' } })
             }

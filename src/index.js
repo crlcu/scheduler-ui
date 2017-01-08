@@ -25,6 +25,8 @@ import RolesSearch from './components/Roles/Search'
 import RolesCreate from './components/Roles/Create'
 import RolesEdit from './components/Roles/Edit'
 
+import NotFound from './components/NotFound'
+
 const middleware = [ thunk ]
 
 if (process.env.NODE_ENV !== 'production') {
@@ -52,37 +54,43 @@ store.subscribe(function fetcher(a, b, c) {
 const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={ store }>
         { /* Tell the Router to use our enhanced history */ }
-        <Router history={history}>
-            <Route path="login" component={Login} />
+        <Router history={ history}>
+            <Route path="login" component={ Login } />
 
-            <Route path="/" component={LoggedIn} onEnter={(nextState, replace) => auth.check(nextState, replace)}>
-                <Route path="logout" component={Logout} />
+            <Route component={ LoggedIn } onEnter={ (nextState, replace) => auth.check(nextState, replace) }>
+                <Route path="/" component={ Tasks}>
+                    <IndexRoute component={ TasksSearch } />
+                </Route>
 
-                <Route path="/tasks" component={Tasks}>
-                    <IndexRoute component={TasksSearch} />
+                <Route path="/tasks" component={ Tasks}>
+                    <IndexRoute component={ TasksSearch } />
 
-                    <Route path="/" component={TasksSearch} />
+                    <Route path="/" component={ TasksSearch } />
                     
                     <Route path=":id">
-                        <IndexRoute component={TasksView} />
+                        <IndexRoute component={ TasksView } />
 
-                        <Route path="edit" component={TasksView} />
-                        <Route path="notifications" component={TasksView} />
-                        <Route path="delete" component={TasksView} />
+                        <Route path="edit" component={ TasksView } />
+                        <Route path="notifications" component={ TasksView } />
+                        <Route path="delete" component={ TasksView } />
                     </Route>
                 </Route>
 
-                <Route path="/timeline" component={TasksSearch} />
+                <Route path="/timeline" component={ TasksSearch } onEnter={ (nextState, replace) => auth.hasRole(nextState, replace, 'has-timeline') } />
                 
-                <Route path="/roles">
-                    <IndexRoute component={RolesSearch} />
+                <Route path="/roles" onEnter={ (nextState, replace) => auth.hasRole(nextState, replace, 'manage-roles') }>
+                    <IndexRoute component={ RolesSearch } />
 
-                    <Route path="create" component={RolesCreate} />
-                    <Route path=":id/edit" component={RolesEdit} />
+                    <Route path="create" component={ RolesCreate } />
+                    <Route path=":id/edit" component={ RolesEdit } />
                 </Route>
+
+                <Route path="logout" component={ Logout } />
             </Route>
+
+            <Route path="*" component={ NotFound } />
         </Router>
     </Provider>,
     document.getElementById('root')

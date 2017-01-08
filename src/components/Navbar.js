@@ -6,8 +6,6 @@ import { Link } from 'react-router'
 class TopNavbar extends Component {
     render() {
         const { user } = this.props
-
-        console.log(user)
         
         return (
             <div className="navbar-fixed">

@@ -12,5 +12,20 @@ module.exports = {
                 state: { nextPathname: nextState.location.pathname }
             })
         }
+    },
+
+    hasRole(nextState, replace, role) {
+        const user = JSON.parse(storage.get('user'))
+
+        if (user.roles.indexOf(role) < 0) {
+            this.notAuthorized(nextState, replace)
+        }
+    },
+
+    notAuthorized(nextState, replace) {
+        replace({
+            pathname: '/not-allowed',
+            state: { nextPathname: nextState.location.pathname }
+        })
     }
 }
