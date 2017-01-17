@@ -88,7 +88,7 @@ class Search extends Component {
                             <th>Name</th>
                             <th>Users in this group</th>
                             <th width="100px">
-                                <Link className="btn-floating waves-effect waves-light green right" to="/roles/create">
+                                <Link className="btn-floating waves-effect waves-light green right" to="/groups/create">
                                     <Icon>add</Icon>
                                 </Link>
                             </th>

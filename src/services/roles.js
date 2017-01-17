@@ -2,7 +2,7 @@ import queryString from 'query-string'
 import Api from './api'
 
 class Endpoint extends Api {
-    async create(args) {
+    async store(args) {
         const url = `${this.baseUrl}`
 
         const response = await fetch(url, {

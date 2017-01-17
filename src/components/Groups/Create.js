@@ -4,22 +4,47 @@ import { Button, Icon, Input, Row } from 'react-materialize'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import * as actions from '../../store/roles/actions'
+import * as actions from '../../store/groups/actions'
 
 import Widget from '../Shared/Widget'
 
 class Create extends Component {
+    constructor(props) {
+        super(props)
+
+        this.inputs = new Set()
+    }
+
+    componentDidMount() {
+        this.props.actions.create()
+    }
+
     handleSubmit(event) {
         event.preventDefault()
 
-        this.props.actions.create({
-            name:           this.refs.name.state.value,
-            description:    this.refs.description.state.value
-        })
+        console.log(this.formData)
+
+        // this.props.actions.store({
+        //     name:           this.refs.name.state.value
+        // })
+    }
+
+    updateFormData(event) {
+        if (event.target.type === 'checked') {
+        }
+
+        this.inputs.add({ name: event.target.value })
+
+        console.log(this.inputs)
+
+        // console.log(event.target.type)
+        // console.log(event.target.checked)
+        // console.log(event.target.name)
+        // console.log(event.target.value)
     }
 
     render() {
-        const { loading, validation } = this.props
+        const { loading, roles, validation } = this.props
 
         const footer = (
             <Button type="submit" className="green right" waves="light">
@@ -29,13 +54,13 @@ class Create extends Component {
         
         return (
             <div>
-                <Helmet title={ "Scheduler | Roles | Create" } />
+                <Helmet title={ "Scheduler | Groups | Create" } />
 
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onChange={ this.updateFormData.bind(this) } onSubmit={ this.handleSubmit.bind(this) }>
                     <Widget
                         footer={ footer }
                         loading={ loading }
-                        title="Role details"
+                        title="Group details"
                     >
                         <Row>
                             <Input
@@ -46,15 +71,12 @@ class Create extends Component {
                                 label="Name" s={12} error={ validation.errorFor('name') } autoFocus
                                 validate
                             />
+                        </Row>
 
-                            <Input
-                                defaultValue={ validation.old.description }
-                                type="text"
-                                name="description"
-                                ref="description"
-                                label="Description" s={12} error={ validation.errorFor('description') }
-                                validate
-                            />
+                        <Row>
+                            {roles.map((role, i) =>
+                                <Input key={ i } name="role" type="checkbox" value={ role.id } label={ role.description } />
+                            )}
                         </Row>
                     </Widget>
                 </form>
@@ -65,7 +87,8 @@ class Create extends Component {
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = state => ({
-    loading:    state.roles.loading,
+    loading:    state.groups.loading,
+    roles:      state.groups.roles,
     validation: state.validation
 })
 

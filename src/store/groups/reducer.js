@@ -9,11 +9,16 @@ const initialState = Immutable({
         data: []
     },
     group: {},
+    roles: [],
     search: ''
 })
 
 export default function reduce(state = initialState, action = {}) {
     switch (action.type) {
+        case actions.CREATE:
+            return state.merge({
+                roles: action.roles
+            })
         case actions.EDIT:
             return state.merge({
                 group: action.group

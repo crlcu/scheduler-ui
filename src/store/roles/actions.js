@@ -11,15 +11,15 @@ export const changePage = (page) => {
     }
 }
 
-export const create = (args) => {
+export const store = (args) => {
     return async(dispatch, getState) => {
         dispatch({ type: actions.LOADING, loading: true })
 
         try {
-            const response = await api.create(args)
+            const response = await api.store(args)
 
             if (response.success) {
-                dispatch({ type: actions.CREATED, role: response.data })
+                dispatch({ type: actions.STORED, role: response.data })
                 
                 // Redirect to roles page
                 browserHistory.push('/roles')

@@ -12,7 +12,7 @@ class Create extends Component {
     handleSubmit(event) {
         event.preventDefault()
 
-        this.props.actions.create({
+        this.props.actions.store({
             name:           this.refs.name.state.value,
             description:    this.refs.description.state.value
         })

@@ -2,7 +2,22 @@ import queryString from 'query-string'
 import Api from './api'
 
 class Endpoint extends Api {
-    async create(args) {
+    async create() {
+        const url = `${this.baseUrl}/create`
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: this.getHeaders()
+        })
+
+        if (!response.ok) {
+            throw new Error(`Request failed, HTTP status ${response.status}`)
+        }
+        
+        return await response.json()
+    }
+
+    async store(args) {
         const url = `${this.baseUrl}`
 
         const response = await fetch(url, {

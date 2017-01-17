@@ -3,9 +3,10 @@ class ActionType {
         this.LOADING = namespace + '.LOADING'
         
         this.CREATE = namespace + '.CREATE'
-        this.CREATED = namespace + '.CREATED'
+        this.STORED = namespace + '.STORED'
         this.EDIT = namespace + '.EDIT'
         this.UPDATED = namespace + '.UPDATED'
+        
         this.SEARCH = namespace + '.SEARCH'
         this.VIEW = namespace + '.VIEW'
 

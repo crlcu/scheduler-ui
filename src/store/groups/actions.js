@@ -11,15 +11,31 @@ export const changePage = (page) => {
     }
 }
 
-export const create = (args) => {
+export const create = () => {
     return async(dispatch, getState) => {
         dispatch({ type: actions.LOADING, loading: true })
 
         try {
-            const response = await api.create(args)
+            const response = await api.create()
+
+            dispatch({ type: actions.CREATE, roles: response.roles })
+        } catch (error) {
+            console.error(error)
+        }
+
+        dispatch({ type: actions.LOADING, loading: false })
+    }
+}
+
+export const store = (args) => {
+    return async(dispatch, getState) => {
+        dispatch({ type: actions.LOADING, loading: true })
+
+        try {
+            const response = await api.store(args)
 
             if (response.success) {
-                dispatch({ type: actions.CREATED, group: response.data })
+                dispatch({ type: actions.STORED, group: response.data })
                 
                 // Redirect to groups page
                 browserHistory.push('/groups')
